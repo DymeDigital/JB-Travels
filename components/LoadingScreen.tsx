@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function LoadingScreen({
@@ -91,25 +92,16 @@ export default function LoadingScreen({
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="mb-12 text-center"
           >
-            <div className="flex items-center gap-2 justify-center mb-1">
-              <div className="w-8 h-8 rounded-full bg-[#0B3D5B] flex items-center justify-center">
-                <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4">
-                  <path
-                    d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-                    stroke="#D8B15A"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+            <div className="flex items-center justify-center mb-3">
+              <div className="relative w-40 h-40">
+                <Image
+                  src="/images/logo12.png"
+                  alt="JB Travels Logo"
+                  fill
+                  className="object-contain rounded-full shadow-md"
+                  priority
+                />
               </div>
-              <span
-                className="text-2xl font-bold text-[#0B3D5B]"
-                style={{ fontFamily: "Poppins, sans-serif" }}
-              >
-                Aurelia
-                <span className="text-[#D8B15A]">Travel</span>
-              </span>
             </div>
             <p
               className="text-xs tracking-[0.3em] uppercase text-[#6B7280]"
