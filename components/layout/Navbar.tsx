@@ -24,6 +24,11 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
 
   useEffect(() => {
@@ -55,7 +60,8 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <Link
-              href="#hero"
+              href="/#hero"
+              onClick={handleLogoClick}
               className="flex items-center group"
               aria-label="JB Travels - Home"
             >
@@ -174,19 +180,23 @@ export default function Navbar() {
                   {link.label}
                 </motion.a>
               ))}
-              <motion.a
-                href="#booking"
-                onClick={(e) => handleNavClick(e, "#booking")}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="mt-6 px-8 py-3 rounded-full bg-[#D8B15A] text-[#0B3D5B] font-bold text-lg"
-                style={{ fontFamily: "Poppins, sans-serif" }}
-              >
-                Contact Us
-              </motion.a>
-            </nav>
 
+
+
+              <button
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  setIsModalOpen(true);
+                }}
+                className="hero-btn group relative inline-flex items-center translate-y-10 gap-3 px-6 py-3 rounded-full overflow-hidden font-bold text-lg text-[#0B3D5B] shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                <span className="absolute inset-0 bg-[#D8B15A] group-hover:bg-[#c9a33f] transition-colors  duration-300" />
+                <span className="relative ">Enquire Now</span>
+                <ArrowRight className="relative w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </nav>
             {/* Decorative element */}
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
               <div className="relative w-28 h-10">

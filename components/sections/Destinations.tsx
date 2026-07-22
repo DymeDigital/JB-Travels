@@ -351,7 +351,7 @@ export default function Destinations() {
                   <article
                     onClick={() => openModal(dest)}
                     data-cursor="card"
-                    className="destination-card group relative rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 sm:hover:-translate-y-3 cursor-pointer h-full flex flex-col opacity-0"
+                    className="destination-card group relative rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 sm:hover:-translate-y-3 cursor-pointer h-full flex flex-col opacity-100"
                     style={{ willChange: "transform, box-shadow" }}
                     aria-label={`${dest.name}, ${dest.country}`}
                   >
