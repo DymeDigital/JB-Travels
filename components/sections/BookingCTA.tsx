@@ -103,12 +103,12 @@ export default function BookingCTA() {
             </button>
 
             <a
-              href="tel:+27319428878"
+              href="tel:+27786687659"
               className="group inline-flex items-center gap-3 px-10 py-4 rounded-full border border-white/40 hover:border-white text-white font-semibold backdrop-blur-sm hover:bg-white/10 transition-all duration-300"
               style={{ fontFamily: "Inter, sans-serif" }}
             >
               <span className="text-[#D8B15A]">✆</span>
-              Call Us: +27 31 942 8878
+              Call Us: +27 78 668 7659
             </a>
           </div>
 
