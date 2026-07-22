@@ -59,7 +59,7 @@ export default function Navbar() {
               className="flex items-center group"
               aria-label="JB Travels - Home"
             >
-              <div className="relative  w-72 h-46 md:w-60 md:h-30 flex items-center">
+              <div className="relative w-40 h-24 -ml-6 md:ml-0 md:w-60 md:h-30 flex items-center">
                 <Image
                   src="/images/logonav.png"
                   alt="JB Travels Logo"
