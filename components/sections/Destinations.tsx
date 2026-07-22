@@ -20,7 +20,7 @@ const destinations: Destination[] = [
     name: "Europe",
     country: "France, Italy, Greece",
     description: "Discover iconic cities, timeless history, and unforgettable luxury experiences.",
-    longDescription: "Embark on an unforgettable grand tour through Western Europe's finest destinations. From private vineyard tastings in Tuscany and sunset yacht charters in Santorini to exclusive access to Parisian landmarks.",
+    longDescription: "Discover the beauty, history, and culture of Europe with carefully curated journeys designed around your travel style. Whether you're seeking iconic landmarks, charming villages, breathtaking landscapes, or unforgettable culinary experiences, our flexible packages offer the perfect balance of comfort, exploration, and authentic local experiences.",
     highlights: [
       "5-Star Luxury Palace & Boutique Accommodations",
       "Private Chauffeur & VIP Airport Transfers",
@@ -35,7 +35,7 @@ const destinations: Destination[] = [
     country: "Bali",
     description: "Relax among tropical beaches, lush landscapes, and peaceful spiritual temples.",
     image: "/images/Bali2.png",
-    longDescription: "Escape into tropical paradise with our bespoke Bali package. Experience tranquil beachfront villas in Seminyak, private jungle retreats in Ubud, and personalized wellness sessions overlooking emerald rice terraces.",
+    longDescription: "Escape to the tropical paradise of Bali with personalized holidays designed for relaxation, adventure, and unforgettable moments. Whether you're planning a romantic getaway, family vacation, or luxury retreat, our flexible packages cater to every style of travel.",
     highlights: [
       "Private Oceanfront Villa with Infinity Pool",
       "Helicopter Transfer & Island Hopping",
@@ -49,7 +49,7 @@ const destinations: Destination[] = [
     country: "Delhi & Agra",
     description: "Experience vibrant culture, rich royal heritage, and spiritual wonders.",
     image: "/images/Inida2.png",
-    longDescription: "Journey through Rajasthan and the Golden Triangle in regal style. Experience royal palaces converted into ultra-luxury heritage hotels, private sunrise tours of the Taj Mahal, and curated culinary masterclasses.",
+    longDescription: "Experience the rich heritage, vibrant traditions, and diverse landscapes of India through thoughtfully planned journeys tailored to your interests. From cultural discoveries and spiritual retreats to luxury escapes and family holidays, every itinerary is designed to create meaningful travel experiences.",
     highlights: [
       "Royal Palace & Heritage Hotel Stays",
       "Private Sunrise Taj Mahal VIP Access",
@@ -63,7 +63,7 @@ const destinations: Destination[] = [
     country: "Istanbul & Cappadocia",
     description: "Explore stunning balloon architecture, vibrant markets, and scenic coastlines.",
     image: "/images/Turkey2.png",
-    longDescription: "Immerse yourself in the crossroads of East and West. Enjoy private hot-air balloon flights over Cappadocia's fairy chimneys, luxury Bosphorus cruises, and opulent cave suite accommodations.",
+    longDescription: "Explore the unique blend of history, culture, and natural beauty that Turkey has to offer. Whether you're looking for a relaxing coastal escape, a historical adventure, or a vibrant city experience, our tailored packages ensure a seamless and memorable journey.",
     highlights: [
       "Private Sunrise Hot Air Balloon Flight",
       "Bosphorus Sunset Luxury Yacht Cruise",
@@ -599,20 +599,7 @@ export default function Destinations() {
                       {selectedDestination.longDescription}
                     </p>
 
-                    {/* Highlights List */}
-                    <div className="mb-6">
-                      <h4 className="text-xs uppercase font-bold tracking-wider text-[#0B3D5B] mb-2.5" style={{ fontFamily: "Inter, sans-serif" }}>
-                        Package Highlights
-                      </h4>
-                      <ul className="space-y-2">
-                        {selectedDestination.highlights.map((highlight, i) => (
-                          <li key={i} className="flex items-start gap-2.5 text-xs text-[#374151]">
-                            <CheckCircle2 className="w-4 h-4 text-[#D8B15A] shrink-0 mt-0.5" />
-                            <span>{highlight}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+
                   </div>
 
                   {/* CTA Buttons */}
@@ -665,7 +652,7 @@ export default function Destinations() {
                           Enquire: {selectedDestination.name} Package
                         </h4>
                         <p className="text-xs text-[#6B7280]">
-                          Send your travel enquiry to faekacounn@gmail.com
+                          Send your travel enquiry to brandon@jbtravel.co.za
                         </p>
                       </div>
                       <button

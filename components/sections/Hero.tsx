@@ -47,7 +47,7 @@ export default function Hero() {
         tl.fromTo(
           planeRef.current,
           { opacity: 0 },
-          { opacity: 1, duration: 0.3 },
+          { opacity: 1, duration: 0.8 },
           0.2
         );
 
@@ -59,7 +59,7 @@ export default function Hero() {
             motionPath: {
               path: pathRef.current,
               align: pathRef.current,
-              autoRotate: true,
+              autoRotate: 90,
               alignOrigin: [0.5, 0.5],
             },
           },
@@ -186,16 +186,16 @@ export default function Hero() {
         }, 0);
 
         // 3. Navbar Animations
-        const header = document.querySelector("header");
-        if (header) {
-          scrollTl.to(header, {
-            backgroundColor: "rgba(8, 15, 26, 0.4)",
-            backdropFilter: "blur(16px)",
-            borderColor: "rgba(255, 255, 255, 0.12)",
-            boxShadow: "0 10px 30px -10px rgba(0,0,0,0.3)",
-            ease: "none",
-          }, 0);
-        }
+        // const header = document.querySelector("header");
+        // if (header) {
+        //   scrollTl.to(header, {
+        //     backgroundColor: "rgba(8, 15, 26, 0.4)",
+        //     // backdropFilter: "blur(16px)",
+        //     borderColor: "rgba(255, 255, 255, 0.12)",
+        //     boxShadow: "0 10px 30px -10px rgba(0,0,0,0.3)",
+        //     ease: "none",
+        //   }, 0);
+        // }
 
         // 4. Next Section Reveal (Destinations header, cards, view-all)
         const destHeader = document.querySelector("#destinations-header");
@@ -403,7 +403,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 3.5, duration: 1 }}
@@ -422,7 +422,7 @@ export default function Hero() {
         >
           <div className="w-1 h-2 rounded-full bg-white/60" />
         </motion.div>
-      </motion.div>
+      </motion.div> */}
 
       {/* Stats strip at bottom */}
       {/* <motion.div

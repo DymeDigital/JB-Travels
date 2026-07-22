@@ -58,111 +58,84 @@ export default function Footer() {
     <footer className="bg-[#080F1A] text-white/80" role="contentinfo">
       {/* Top section */}
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 pt-20 pb-12">
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-8">
+        <div className="flex flex-col items-center text-center max-w-md mx-auto">
           {/* Brand + Newsletter */}
-          <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center mb-6 group">
-              <div className="relative w-36 h-12 flex items-center">
-                <Image
-                  src="/images/logo-transparent.png"
-                  alt="JB Travels Logo"
-                  fill
-                  className="object-contain transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-            </Link>
+          <Link href="/" className="flex items-center justify-center mb-6 group">
+            <div className="relative w-86 h-32 flex items-center">
+              <Image
+                src="/images/logo-transparent.png"
+                alt="JB Travels Logo"
+                fill
+                className="object-contain transition-transform duration-300 group-hover:scale-105"
+              />
+            </div>
+          </Link>
 
-            <p
-              className="text-sm text-white/50 leading-relaxed mb-8 max-w-xs"
-              style={{ fontFamily: "Inter, sans-serif" }}
+          <p
+            className="text-sm text-white/50 leading-relaxed mb-8"
+            style={{ fontFamily: "Inter, sans-serif" }}
+          >
+            Crafting extraordinary journeys for discerning travelers. Every destination, every experience — curated with passion and precision.
+          </p>
+
+          {/* Newsletter */}
+          <div className="mb-8 w-full">
+            <h4
+              className="text-sm font-semibold text-white mb-3 uppercase tracking-widest"
+              style={{ fontFamily: "Poppins, sans-serif" }}
             >
-              Crafting extraordinary journeys for discerning travelers. Every destination, every experience — curated with passion and precision.
-            </p>
-
-            {/* Newsletter */}
-            <div className="mb-8">
-              <h4
-                className="text-sm font-semibold text-white mb-3 uppercase tracking-widest"
-                style={{ fontFamily: "Poppins, sans-serif" }}
+              Stay Inspired
+            </h4>
+            {subscribed ? (
+              <motion.p
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-sm text-[#D8B15A]"
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
-                Stay Inspired
-              </h4>
-              {subscribed ? (
-                <motion.p
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-sm text-[#D8B15A]"
+                ✓ You&apos;re on the list. Adventures await.
+              </motion.p>
+            ) : (
+              <form onSubmit={handleSubmit} className="flex gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Your email address"
+                  required
+                  aria-label="Email for newsletter"
+                  className="flex-1 px-4 py-2.5 rounded-full bg-white/8 border border-white/15 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-[#D8B15A]/60 transition-colors"
                   style={{ fontFamily: "Inter, sans-serif" }}
+                />
+                <button
+                  type="submit"
+                  aria-label="Subscribe to newsletter"
+                  className="w-10 h-10 rounded-full bg-[#D8B15A] hover:bg-[#c9a24f] flex items-center justify-center transition-colors shrink-0"
                 >
-                  ✓ You&apos;re on the list. Adventures await.
-                </motion.p>
-              ) : (
-                <form onSubmit={handleSubmit} className="flex gap-2">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email address"
-                    required
-                    aria-label="Email for newsletter"
-                    className="flex-1 px-4 py-2.5 rounded-full bg-white/8 border border-white/15 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-[#D8B15A]/60 transition-colors"
-                    style={{ fontFamily: "Inter, sans-serif" }}
-                  />
-                  <button
-                    type="submit"
-                    aria-label="Subscribe to newsletter"
-                    className="w-10 h-10 rounded-full bg-[#D8B15A] hover:bg-[#c9a24f] flex items-center justify-center transition-colors shrink-0"
-                  >
-                    <ArrowRight className="w-4 h-4 text-[#0B3D5B]" />
-                  </button>
-                </form>
-              )}
-            </div>
-
-            {/* Social Icons */}
-            <div className="flex gap-3">
-              {socials.map(({ path, label, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="w-9 h-9 rounded-full bg-white/8 border border-white/10 flex items-center justify-center hover:bg-[#D8B15A]/20 hover:border-[#D8B15A]/40 transition-all"
-                >
-                  <SocialIcon path={path} />
-                </a>
-              ))}
-            </div>
+                  <ArrowRight className="w-4 h-4 text-[#0B3D5B]" />
+                </button>
+              </form>
+            )}
           </div>
 
-          {/* Links */}
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h4
-                className="text-xs font-semibold text-white uppercase tracking-[0.2em] mb-5"
-                style={{ fontFamily: "Poppins, sans-serif" }}
+          {/* Social Icons */}
+          <div className="flex gap-3 justify-center">
+            {socials.map(({ path, label, href }) => (
+
+              <a key={label}
+                href={href}
+                aria-label={label}
+                className="w-9 h-9 rounded-full bg-white/8 border border-white/10 flex items-center justify-center hover:bg-[#D8B15A]/20 hover:border-[#D8B15A]/40 transition-all"
               >
-                {category}
-              </h4>
-              <ul className="space-y-2.5">
-                {links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-sm text-white/45 hover:text-[#D8B15A] transition-colors"
-                      style={{ fontFamily: "Inter, sans-serif" }}
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+                <SocialIcon path={path} />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/8">
+      <div className=" border-t border-white/8">
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p
             className="text-xs text-white/35"
@@ -172,10 +145,10 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-1 text-xs text-white/25" style={{ fontFamily: "Inter, sans-serif" }}>
             <Mail className="w-3 h-3" />
-            <span>hello@jbtravels.com</span>
+            <span>brandon@jbtravels.com</span>
           </div>
           <p className="text-xs text-white/25" style={{ fontFamily: "Inter, sans-serif" }}>
-            Crafted with passion for extraordinary travelers
+            Crafted by <a href="https://dyme.digital/">Dyme Digital</a>
           </p>
         </div>
       </div>

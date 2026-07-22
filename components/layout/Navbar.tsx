@@ -48,23 +48,20 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-        className={`fixed top-0 left-0 right-0 z-[990] transition-all duration-500 ${scrolled
-          ? "backdrop-blur-md bg-black/10 border-b border-white/5 shadow-sm"
-          : "bg-transparent"
-          }`}
+        className="fixed top-0 left-0 right-0 z-[990] bg-transparent"
         role="banner"
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <Link
-              href="/"
+              href="#hero"
               className="flex items-center group"
               aria-label="JB Travels - Home"
             >
-              <div className="relative  w-64 h-32 md:w-60 md:h-30 flex items-center">
+              <div className="relative  w-72 h-46 md:w-60 md:h-30 flex items-center">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logonav.png"
                   alt="JB Travels Logo"
                   fill
                   className="object-contain transition-transform duration-300 group-hover:scale-105"
@@ -74,8 +71,8 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Nav Capsule */}
-            <div className="hidden lg:flex items-center bg-black/25 backdrop-blur-md border border-white/10 rounded-full px-8 py-2.5 shadow-lg shadow-black/10">
-              <nav
+            <div className={`hidden lg:flex items-center backdrop-blur-md border border-white/10 rounded-full px-8 py-2.5 shadow-lg shadow-black/10 transition-colors duration-500 ${scrolled ? "bg-black/40" : "bg-black/25"
+              }`}>              <nav
                 className="flex items-center gap-8"
                 aria-label="Main navigation"
               >
