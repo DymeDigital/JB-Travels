@@ -104,7 +104,7 @@ export default function PlanningModal({ isOpen, onClose }: PlanningModalProps) {
         setFieldErrors({});
 
         try {
-            const res = await fetch("/api/contact", {
+            const res = await fetch("/api/enquire", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

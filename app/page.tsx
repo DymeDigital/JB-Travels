@@ -29,7 +29,7 @@ export default function Home() {
       {!loading && (
         <LenisProvider>
           {/* <CustomCursor /> */}
-          <ScrollProgress />
+          {/* <ScrollProgress /> */}
           <Navbar />
           <main id="main-content" tabIndex={-1}>
             <Hero />

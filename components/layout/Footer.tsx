@@ -145,7 +145,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-1 text-xs text-white/25" style={{ fontFamily: "Inter, sans-serif" }}>
             <Mail className="w-3 h-3" />
-            <span>brandon@jbtravels.com</span>
+            <span>brandon@jbtravel.co.za</span>
           </div>
           <p className="text-xs text-white/25" style={{ fontFamily: "Inter, sans-serif" }}>
             Crafted by <a href="https://dyme.digital/">Dyme Digital</a>

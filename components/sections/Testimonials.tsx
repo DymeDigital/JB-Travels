@@ -8,13 +8,13 @@ import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 const testimonials = [
   {
     id: 1,
-    name: "Alexandra Hartmann",
-    location: "Munich, Germany",
-    destination: "Maldives",
+    name: "Malcolm & Sharlene Ramiah",
+    location: "Durban, South Africa",
+    destination: "Bali",
     avatar: "/images/avatar-1.svg",
     rating: 5,
     review:
-      "JB Travels turned our anniversary into something beyond imagination. Every single detail was handled with such precision and care. The private overwater villa, the sunset cruises, the personalized dining — pure magic. We will never travel any other way.",
+      "JB Travels has been our trusted travel partner for many years. Every journey is planned with professionalism, transparency, and genuine care, making the entire experience seamless from start to finish. Their dedication to exceptional service and creating unforgettable travel experiences is truly unmatched. We highly recommend JB Travels to anyone looking for a reliable and customer-focused travel agency.",
     date: "January 2025",
   },
   {

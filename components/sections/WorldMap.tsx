@@ -13,6 +13,7 @@ import {
   Compass,
   ChevronDown,
   LucideIcon,
+  ShieldCheck,
 } from "lucide-react";
 
 type Service = {
@@ -26,7 +27,7 @@ const services: Service[] = [
     icon: Plane,
     title: "Flight Bookings",
     description:
-      "Domestic and international flight reservations across Economy, Premium Economy and Business Class, matched to your schedule, route and budget. We handle everything from single tickets to multi-country transit itineraries.",
+      "Domestic and International flight reservations across Economy, Premium Economy and Business Class, matched to your schedule, route and budget. We handle everything from single tickets to multi-country transit itineraries.",
   },
   {
     icon: MapPinned,
@@ -39,6 +40,12 @@ const services: Service[] = [
     title: "Visa Assistance",
     description:
       "Full visa application support including eligibility guidance, document preparation and verification, appointment assistance, embassy and consulate submission guidance, and a final pre-departure documentation review. Covers tourist, business, group and transit visas. Approval remains subject to the relevant embassy or consulate, but we help you proceed with confidence.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Travel Insurance",
+    description:
+      "Comprehensive travel insurance covering medical emergencies, trip cancellations, lost luggage and unforeseen delays, so you can explore with complete peace of mind. We help you select the right level of cover for your destination, trip length and personal circumstances, from single-trip policies to multi-country and group cover.",
   },
   {
     icon: BedDouble,
@@ -70,6 +77,7 @@ const services: Service[] = [
     description:
       "Professionally curated sightseeing tours, excursions, cruises and ferry arrangements across our featured regions — from cultural journeys through India and Egypt to island exploration in the Mediterranean and Southern Africa — connecting you with local history and hidden gems.",
   },
+
 ];
 
 const containerVariants = {

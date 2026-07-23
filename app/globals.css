@@ -155,5 +155,5 @@ body {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   background: rgba(11, 61, 91, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px sol id rgba(255, 255, 255, 0.15);
 }

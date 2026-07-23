@@ -103,7 +103,7 @@ export async function POST(request: Request) {
 
     const result = await sendViaResend(apiKey, {
       from: "JB Travel Enquiries <onboarding@resend.dev>",
-      to: ["brandon@jbtravel.co.za"],
+      to: ["faekacounn@gmail.com"],
       reply_to: email,
       subject: emailSubject,
       html: htmlContent,

@@ -53,19 +53,29 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-        className="fixed top-0 left-0 right-0 z-[990] bg-transparent"
+        className={`fixed top-0 left-0 right-0 z-[990] bg-transparent transition-all duration-500 ease-out ${scrolled ? "lg:pt-3" : "pt-0"
+          }`}
         role="banner"
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
-          <div className="flex items-center justify-between h-16 md:h-20">
+          <div
+            className={`flex items-center transition-all duration-500 ease-out ${scrolled ? "h-16 md:h-16" : "h-16 md:h-20"
+              } ${scrolled
+                ? "lg:justify-start lg:w-fit lg:mx-auto lg:bg-black/40 lg:backdrop-blur-md lg:border lg:border-white/10 lg:rounded-full lg:px-3 lg:py-1 lg:gap-6 lg:shadow-lg lg:shadow-black/10"
+                : "justify-between lg:bg-transparent lg:border lg:border-transparent lg:px-0 lg:py-0"
+              }`}
+          >
             {/* Logo */}
             <Link
               href="/#hero"
               onClick={handleLogoClick}
-              className="flex items-center group"
+              className="flex items-center group shrink-0"
               aria-label="JB Travels - Home"
             >
-              <div className="relative w-40 h-24 -ml-6 md:ml-0 md:w-60 md:h-30 flex items-center">
+              <div
+                className={`relative flex items-center transition-all duration-500 ease-out w-60 h-32 -ml-6 md:ml-0 ${scrolled ? "md:w-32 md:h-20" : "md:w-60 md:h-28"
+                  }`}
+              >
                 <Image
                   src="/images/logonav.png"
                   alt="JB Travels Logo"
@@ -76,15 +86,17 @@ export default function Navbar() {
               </div>
             </Link>
 
-            {/* Desktop Nav Capsule */}
-            <div className={`hidden lg:flex items-center backdrop-blur-md border border-white/10 rounded-full px-8 py-2.5 shadow-lg shadow-black/10 transition-colors duration-500 ${scrolled ? "bg-black/40" : "bg-black/25"
-              }`}>              <nav
-                className="flex items-center gap-8"
-                aria-label="Main navigation"
-              >
+            {/* Desktop Nav Capsule - has its OWN pill at rest, loses it when scrolled */}
+            <div
+              className={`hidden lg:flex items-center transition-all duration-500 ease-out ${scrolled
+                ? "bg-transparent border border-transparent px-0 py-0 gap-4"
+                : "backdrop-blur-md border border-white/10 rounded-full px-8 py-2.5 shadow-lg shadow-black/10 bg-black/25 gap-0"
+                }`}
+            >
+              <nav className="flex items-center gap-8" aria-label="Main navigation">
                 {navLinks.map((link) => (
-                  <a
-                    key={link.label}
+
+                  <a key={link.label}
                     href={link.href}
                     onClick={(e) => handleNavClick(e, link.href)}
                     className="relative text-sm font-medium text-white/90 hover:text-white transition-colors group py-1"
@@ -104,16 +116,17 @@ export default function Navbar() {
             </div>
 
             {/* CTA Button */}
-            <div className="hidden lg:flex items-center">
+            <div className="hidden lg:flex items-center shrink-0">
               <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
-                className="hero-btn group relative inline-flex items-center gap-3 px-6 py-3 rounded-full overflow-hidden font-bold text-[#0B3D5B] shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                className={`navbar-btn group relative inline-flex items-center gap-2 rounded-full overflow-hidden font-bold text-[#0B3D5B] shadow-2xl hover:-translate-y-1 transition-all duration-500 ease-out ${scrolled ? "px-4 py-2 text-sm" : "px-6 py-3 text-base"
+                  }`}
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
                 <span className="absolute inset-0 bg-[#D8B15A] group-hover:bg-[#c9a33f] transition-colors duration-300" />
                 <span className="relative">Enquire Now</span>
-                <ArrowRight className="relative w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className={`relative group-hover:translate-x-1 transition-transform ${scrolled ? "w-4 h-4" : "w-5 h-5"}`} />
               </button>
             </div>
 
@@ -189,7 +202,7 @@ export default function Navbar() {
                   setMenuOpen(false);
                   setIsModalOpen(true);
                 }}
-                className="hero-btn group relative inline-flex items-center translate-y-10 gap-3 px-6 py-3 rounded-full overflow-hidden font-bold text-lg text-[#0B3D5B] shadow-2xl hover:-translate-y-1 transition-all duration-300"
+                className="navbar-btn group relative inline-flex items-center translate-y-10 gap-3 px-6 py-3 rounded-full overflow-hidden font-bold text-lg text-[#0B3D5B] shadow-2xl hover:-translate-y-1 transition-all duration-300"
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
                 <span className="absolute inset-0 bg-[#D8B15A] group-hover:bg-[#c9a33f] transition-colors  duration-300" />

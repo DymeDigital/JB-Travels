@@ -14,8 +14,8 @@ if (typeof window !== "undefined") {
 }
 
 // Words for stagger reveal
-const heading1 = ["Explore", "Beyond"];
-const heading2 = ["Every", "Horizon"];
+const heading1 = ["Wander,", "Explore,"];
+const heading2 = ["Discover."];
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -54,7 +54,7 @@ export default function Hero() {
         tl.to(
           planeRef.current,
           {
-            duration: 2.8,
+            duration: 3.8,
             ease: "power1.inOut",
             motionPath: {
               path: pathRef.current,
@@ -130,7 +130,7 @@ export default function Hero() {
             end: "+=70%", // Scroll 120% of viewport height
             pin: true,
             pinSpacing: false, // Let next section scroll over
-            scrub: 0.8,
+            scrub: true,
             invalidateOnRefresh: true,
           }
         });
@@ -151,7 +151,7 @@ export default function Hero() {
             y: -80,
             scale: 0.9,
             opacity: 0,
-            letterSpacing: "0.06em",
+            // letterSpacing: "0.06em",
             filter: "blur(10px)",
             stagger: 0.05,
             ease: "power2.inOut",
@@ -461,5 +461,7 @@ export default function Hero() {
       {/* Planning enquiry modal */}
       <PlanningModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section >
+
   );
+
 }
