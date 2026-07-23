@@ -127,11 +127,27 @@ export default function Hero() {
           scrollTrigger: {
             trigger: heroRef.current,
             start: "top top",
-            end: "+=70%", // Scroll 120% of viewport height
+            end: "+=70%",
             pin: true,
-            pinSpacing: false, // Let next section scroll over
-            scrub: true,
+            pinSpacing: false,
+            scrub: true, // was 0.8 — removes catch-up lag, ties animation directly to scroll position
             invalidateOnRefresh: true,
+            onLeaveBack: () => {
+              // Failsafe: force everything back to fully visible when scrolling back above the hero trigger
+              const headingDivs = heroRef.current?.querySelectorAll("h1 > div");
+              if (headingDivs) {
+                gsap.set(headingDivs, {
+                  y: 0,
+                  scale: 1,
+                  opacity: 1,
+                  filter: "blur(0px)",
+                });
+              }
+              gsap.set(".hero-para", { y: 0, opacity: 1, filter: "blur(0px)" });
+              gsap.set(".hero-btn", { y: 0, opacity: 1, scale: 1 });
+              gsap.set(".hero-scroll-indicator", { opacity: 1, y: 0 });
+              gsap.set(".hero-stats-strip", { opacity: 1, y: 0 });
+            },
           }
         });
 

@@ -59,10 +59,10 @@ export default function Navbar() {
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
           <div
-            className={`flex items-center transition-all duration-500 ease-out ${scrolled ? "h-16 md:h-16" : "h-16 md:h-20"
+            className={`flex items-center justify-between transition-all duration-500 ease-out ${scrolled ? "h-16 md:h-16" : "h-16 md:h-20"
               } ${scrolled
                 ? "lg:justify-start lg:w-fit lg:mx-auto lg:bg-black/40 lg:backdrop-blur-md lg:border lg:border-white/10 lg:rounded-full lg:px-3 lg:py-1 lg:gap-6 lg:shadow-lg lg:shadow-black/10"
-                : "justify-between lg:bg-transparent lg:border lg:border-transparent lg:px-0 lg:py-0"
+                : "lg:bg-transparent lg:border lg:border-transparent lg:px-0 lg:py-0"
               }`}
           >
             {/* Logo */}
