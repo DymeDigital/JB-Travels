@@ -27,14 +27,7 @@ export default function Hero() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (!heroRef.current) return;
-       const hasScrollTarget = typeof window !== "undefined" && sessionStorage.getItem("scrollTarget");
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  if (!prefersReducedMotion && !hasScrollTarget) {
-    document.body.style.overflow = "hidden";
-  }
-
+   
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -126,11 +119,7 @@ export default function Hero() {
       );
 
 
-tl.eventCallback("onComplete", () => {
-      if (!prefersReducedMotion && !hasScrollTarget) {
-        document.body.style.overflow = "";
-      }
-    });
+
       // Respect prefers-reduced-motion
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (!prefersReducedMotion) {
@@ -144,6 +133,23 @@ tl.eventCallback("onComplete", () => {
             pinSpacing: false, // Let next section scroll over
             scrub: true,
             invalidateOnRefresh: true,
+
+             onLeaveBack: () => {
+              // Failsafe: force everything back to fully visible when scrolling back above the hero trigger
+              const headingDivs = heroRef.current?.querySelectorAll("h1 > div");
+              if (headingDivs) {
+                gsap.set(headingDivs, {
+                  y: 0,
+                  scale: 1,
+                  opacity: 1,
+                  filter: "blur(0px)",
+                });
+              }
+              gsap.set(".hero-para", { y: 0, opacity: 1, filter: "blur(0px)" });
+              gsap.set(".hero-btn", { y: 0, opacity: 1, scale: 1 });
+              gsap.set(".hero-scroll-indicator", { opacity: 1, y: 0 });
+              gsap.set(".hero-stats-strip", { opacity: 1, y: 0 });
+            },
           }
         });
 
