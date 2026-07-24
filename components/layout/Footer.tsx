@@ -72,11 +72,12 @@ export default function Footer() {
           </Link>
 
           <p
-            className="text-sm text-white/50 leading-relaxed mb-8"
+            className="text-sm text-white/50 leading-relaxed mb-3"
             style={{ fontFamily: "Inter, sans-serif" }}
           >
             Crafting extraordinary journeys for discerning travelers. Every destination, every experience — curated with passion and precision.
           </p>
+      
 
           {/* Newsletter */}
           <div className="mb-8 w-full">
@@ -130,7 +131,11 @@ export default function Footer() {
                 <SocialIcon path={path} />
               </a>
             ))}
+            
           </div>
+          <Link href="/terms" className="hover:text-[#D8B15A] transition-colors mt-3">
+              <u>Terms &amp; Conditions</u> 
+            </Link>
         </div>
       </div>
 

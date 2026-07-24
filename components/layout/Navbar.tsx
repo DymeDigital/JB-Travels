@@ -8,7 +8,7 @@ import { Menu, X, Compass, Search } from "lucide-react";
 import PlanningModal from "@/components/PlanningModal";
 import { ChevronDown, Plane, MapPin } from "lucide-react";
 import { ArrowRight, Sparkles } from "lucide-react";
-
+import { usePathname, useRouter } from "next/navigation";
 
 const navLinks = [
   { label: "Packages", href: "#destinations" },
@@ -20,16 +20,22 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     setMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      router.push("/");
+    }
   };
-
 
   useEffect(() => {
     setMounted(true);
@@ -41,9 +47,14 @@ export default function Navbar() {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setMenuOpen(false);
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
+    if (pathname === "/") {
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      router.push("/");
+      sessionStorage.setItem("scrollTarget", href);
     }
   };
 
@@ -53,11 +64,13 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-        className={`fixed top-0 left-0 right-0 z-[990] bg-transparent transition-all duration-500 ease-out ${scrolled ? "lg:pt-3" : "pt-0"
+        className={`fixed top-0 left-0 right-0 z-[990] transition-all duration-500 ease-out lg:bg-transparent lg:backdrop-blur-none lg:border-b-0 ${scrolled
+          ? "bg-black/30 backdrop-blur-md border-b border-white/10 lg:pt-3"
+          : "bg-transparent backdrop-blur-none border-b border-transparent pt-0"
           }`}
         role="banner"
       >
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16">
           <div
             className={`flex items-center justify-between transition-all duration-500 ease-out ${scrolled ? "h-16 md:h-16" : "h-16 md:h-20"
               } ${scrolled
@@ -73,7 +86,7 @@ export default function Navbar() {
               aria-label="JB Travels - Home"
             >
               <div
-                className={`relative flex items-center transition-all duration-500 ease-out w-60 h-32 -ml-6 md:ml-0 ${scrolled ? "md:w-32 md:h-20" : "md:w-60 md:h-28"
+                className={`relative flex items-center transition-all duration-500 ease-out w-48 h-28 md:w-60 md:h-32 ${scrolled ? "md:w-32 md:h-20" : "md:w-60 md:h-28"
                   }`}
               >
                 <Image
@@ -95,7 +108,6 @@ export default function Navbar() {
             >
               <nav className="flex items-center gap-8" aria-label="Main navigation">
                 {navLinks.map((link) => (
-
                   <a key={link.label}
                     href={link.href}
                     onClick={(e) => handleNavClick(e, link.href)}
@@ -133,7 +145,7 @@ export default function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-colors"
+              className="lg:hidden shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-colors"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
             >
@@ -194,8 +206,6 @@ export default function Navbar() {
                 </motion.a>
               ))}
 
-
-
               <button
                 type="button"
                 onClick={() => {
@@ -212,20 +222,12 @@ export default function Navbar() {
             </nav>
             {/* Decorative element */}
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
-              <div className="relative w-28 h-10">
-                {/* <Image
-                  src="/images/logo-dark-circle.png"
-                  alt="JB Travels Logo"
-                  fill
-                  className="object-contain"
-                /> */}
-              </div>
+              <div className="relative w-28 h-10" />
             </div>
           </motion.div>
         )}
       </AnimatePresence>
       <PlanningModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-
     </>
   );
 }
