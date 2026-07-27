@@ -10,7 +10,7 @@ const testimonials = [
     id: 1,
     name: "Malcolm & Sharlene Ramiah",
     location: "Durban, South Africa",
-    destination: "Bali",
+    destination: "India & Dubai",
     avatar: "/images/avatar-1.svg",
     rating: 5,
     review:
