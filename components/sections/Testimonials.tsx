@@ -19,13 +19,13 @@ const testimonials = [
   },
   {
     id: 2,
-    name: "James & Sophie Chen",
-    location: "London, UK",
-    destination: "Santorini",
+    name: "Juanita B",
+    location: "South Africa",
+    destination: "Turkey",
     avatar: "/images/avatar-2.svg",
     rating: 5,
     review:
-      "From the first conversation to the moment we landed home, the experience was flawless. Our consultant knew exactly what we needed — often before we did. Santorini through JB Travels' eyes is a completely different world. Book them. Don't think twice.",
+      "My experience of traveling with JB Travel these years has been most positive and exhilarating!! The transits, bookings, flights etc have been nothing short of incredible and professional. Thank you for tailoring my every want and need whilst allowing me the time to make memories. The best experience iv had was traveling via your company to Turkey. You’ve brought my longest standing dream to fruition!! I cannot express in words how grateful I was to have your support and facilitate my every move. Every alteration was done so sdeamlessly leaving me nothing to concern myself with. This level of service indicated your dedication to your clients. I am proud to be associated with your company more especially with you as a friend.",
     date: "March 2025",
   },
   {
