@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -18,36 +19,61 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "JB Travels — Luxury Journeys, Extraordinary Destinations",
+  title: {
+    default: "JB Travel | Premier Luxury Travel Agency South Africa",
+    template: "%s | JB Travel",
+  },
   description:
-    "JB Travels crafts bespoke luxury travel experiences to the world's most extraordinary destinations. Overwater villas, private safaris, and curated escapes — all personally designed for you.",
+    "Book custom local and international travel packages, flights, and tours with JB Travel. Explore bespoke luxury holiday experiences personally tailored for you.",
   keywords: [
-    "luxury travel",
-    "luxury holidays",
-    "bespoke travel",
-    "Maldives",
-    "Santorini",
-    "Bali",
-    "Swiss Alps",
-    "travel agency",
-    "premium vacation",
+    "luxury travel packages",
+    "travel agency South Africa",
+    "bespoke travel agency",
+    "holiday packages",
+    "custom tours South Africa",
+    "overwater villas Maldives",
+    "Europe travel packages",
+    "Bali holiday packages",
+    "luxury safaris Africa",
+    "JB Travel packages",
   ],
+  metadataBase: new URL("https://www.jbtravel.co.za"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "JB Travels — Luxury Journeys, Extraordinary Destinations",
-    description:
-      "Bespoke luxury travel experiences crafted by passionate travel experts.",
+    title: "JB Travel | Premier Luxury Travel Agency South Africa",
+    description: "Book custom local and international travel packages, flights, and tours with JB Travel. Bespoke luxury travel experiences personally tailored for you.",
+    url: "https://www.jbtravel.co.za",
+    siteName: "JB Travel",
+    images: [
+      {
+        url: "/images/hero-island2.png", // Using the beautiful hero image as standard OG image share
+        width: 1200,
+        height: 630,
+        alt: "JB Travel Luxury Island Escape",
+      },
+    ],
+    locale: "en_ZA",
     type: "website",
-    locale: "en_US",
-    siteName: "JB Travels",
   },
   twitter: {
     card: "summary_large_image",
-    title: "JB Travels — Luxury Journeys",
-    description: "Bespoke luxury travel experiences curated for unforgettable moments.",
+    title: "JB Travel | Premier Luxury Travel Agency South Africa",
+    description: "Bespoke luxury local and international travel packages tailored for you.",
+    images: ["/images/hero-island2.png"],
   },
   robots: {
     index: true,
     follow: true,
+  },
+  icons: {
+    icon: [
+      { url: "/images/favicon_io/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/favicon_io/favicon-16x16.png", sizes: "16x16", type: "image/png" }
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/images/favicon_io/favicon-32x32.png",
   },
 };
 
@@ -70,6 +96,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a> */}
+        <ScrollToTop />
         {children}
         <FloatingWhatsApp phoneNumber="27786687659" />
       </body>

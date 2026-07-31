@@ -4,36 +4,42 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Compass, Search } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import PlanningModal from "@/components/PlanningModal";
-import { ChevronDown, Plane, MapPin } from "lucide-react";
-import { ArrowRight, Sparkles } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { ArrowRight } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { label: "Packages", href: "#destinations" },
-  { label: "About Us", href: "#why-us" },
-  { label: "Services", href: "#services" },
-  { label: "Experiences", href: "#testimonials" },
-
-  { label: "Contact Us", href: "#booking" },
+  { label: "Packages", href: "/packages" },
+  { label: "About Us", href: "/about" },
+   { label: "Services", href: "/services" },
+  { label: "Testimonials", href: "/testimonials" },
+ 
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
-  const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
+  const handleLogoClick = () => {
     setMenuOpen(false);
     if (pathname === "/") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      router.push("/");
+      window.scrollTo({ top: 0 });
+    }
+  };
+
+  const handleLinkClick = (href: string) => {
+    setMenuOpen(false);
+    if (pathname === href) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0 });
     }
   };
 
@@ -44,19 +50,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
+  // Close mobile menu on route change & scroll to top of new page
+  useEffect(() => {
     setMenuOpen(false);
-    if (pathname === "/") {
-      const target = document.querySelector(href);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      router.push("/");
-      sessionStorage.setItem("scrollTarget", href);
-    }
-  };
+    window.scrollTo({ top: 0 });
+  }, [pathname]);
 
   return (
     <>
@@ -80,7 +78,7 @@ export default function Navbar() {
           >
             {/* Logo */}
             <Link
-              href="/#hero"
+              href="/"
               onClick={handleLogoClick}
               className="flex items-center group shrink-0"
               aria-label="JB Travels - Home"
@@ -108,15 +106,26 @@ export default function Navbar() {
             >
               <nav className="flex items-center gap-8" aria-label="Main navigation">
                 {navLinks.map((link) => (
-                  <a key={link.label}
+                  <Link
+                    key={link.label}
                     href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
-                    className="relative text-sm font-medium text-white/90 hover:text-white transition-colors group py-1"
+                    onClick={() => handleLinkClick(link.href)}
+                    className={`relative text-sm font-medium transition-colors group py-1 ${
+                      pathname === link.href
+                        ? "text-[#D8B15A]"
+                        : "text-white/90 hover:text-white"
+                    }`}
                     style={{ fontFamily: "Inter, sans-serif" }}
                   >
                     {link.label}
-                    <span className="absolute bottom-0 left-0 w-0 h-px bg-[#D8B15A] group-hover:w-full transition-all duration-300" />
-                  </a>
+                    <span
+                      className={`absolute bottom-0 left-0 h-px bg-[#D8B15A] transition-all duration-300 ${
+                        pathname === link.href
+                          ? "w-full"
+                          : "w-0 group-hover:w-full"
+                      }`}
+                    />
+                  </Link>
                 ))}
               </nav>
 
@@ -192,18 +201,25 @@ export default function Navbar() {
               aria-label="Mobile navigation"
             >
               {navLinks.map((link, i) => (
-                <motion.a
+                <motion.div
                   key={link.label}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + i * 0.07, ease: "easeOut" }}
-                  className="text-3xl font-bold text-white/90 hover:text-[#D8B15A] transition-colors"
-                  style={{ fontFamily: "Poppins, sans-serif" }}
                 >
-                  {link.label}
-                </motion.a>
+                  <Link
+                    href={link.href}
+                    onClick={() => handleLinkClick(link.href)}
+                    className={`text-3xl font-bold transition-colors ${
+                      pathname === link.href
+                        ? "text-[#D8B15A]"
+                        : "text-white/90 hover:text-[#D8B15A]"
+                    }`}
+                    style={{ fontFamily: "Poppins, sans-serif" }}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               ))}
 
               <button

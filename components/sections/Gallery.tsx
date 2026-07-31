@@ -47,6 +47,13 @@ const galleryImages = [
     span: "",
     label: "Swiss Alps",
   },
+  {
+    id: 7,
+    src: "/images/Bali2.png",
+    alt: "Swiss Alps snow-capped peaks with alpine village",
+    span: "",
+    label: "Swiss Alps",
+  },
 ];
 
 const containerVariants = {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ArrowRight, MapPin, ChevronLeft, ChevronRight, X, Mail, CheckCircle2, Sparkles, Send, User, Phone, MessageSquare } from "lucide-react";
 
@@ -101,6 +101,9 @@ export default function Destinations() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAll, setShowAll] = useState(false);
   const [visibleCount, setVisibleCount] = useState(3);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const viewAllRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   // Selected package modal state
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
@@ -135,6 +138,42 @@ export default function Destinations() {
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Self-contained entrance animation — works standalone on /packages page
+  // (on the homepage, GSAP in Hero takes over; here we only animate if the
+  //  elements are still invisible after a short delay)
+  useEffect(() => {
+    const elementsToReveal = [
+      headerRef.current,
+      viewAllRef.current,
+    ].filter(Boolean) as HTMLElement[];
+
+    if (elementsToReveal.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            // Only animate if still invisible (GSAP hasn't touched it yet)
+            if (el.style.opacity === "" || el.style.opacity === "0") {
+              el.style.transition = "opacity 0.7s ease, transform 0.7s ease";
+              el.style.opacity = "1";
+              el.style.transform = "translateY(0)";
+            }
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    elementsToReveal.forEach((el) => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   // Close modal on Escape key
@@ -262,8 +301,10 @@ export default function Destinations() {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 lg:px-16" >
         {/* Section Header */ }
         < div
+  ref={headerRef}
   id = "destinations-header"
-  className = "mb-8 sm:mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 opacity-0"
+  className = "mb-8 sm:mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6"
+  style={{ opacity: 0, transform: "translateY(20px)" }}
     >
     <div>
     <div className="flex items-center gap-3 mb-3 sm:mb-4" >
@@ -523,8 +564,10 @@ style = {{ fontFamily: "Inter, sans-serif" }}
 
 {/* View All / Toggle Button */ }
 <div
+          ref={viewAllRef}
           id="destinations-viewall"
-className = "mt-10 sm:mt-14 text-center opacity-0"
+className = "mt-10 sm:mt-14 text-center"
+  style={{ opacity: 0, transform: "translateY(20px)" }}
   >
   <button
             onClick={ () => setShowAll(!showAll) }

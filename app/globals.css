@@ -19,9 +19,8 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Remove global smooth scroll since Lenis handles smooth scrolling,
+   preventing scroll-hijacking conflicts on page changes */
 
 body {
   /* cursor: none; hide default cursor — custom cursor handles it */
@@ -62,23 +61,7 @@ body {
   color: var(--color-ocean);
 }
 
-/* ===== Scrollbar ===== */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-ocean);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-turquoise);
-}
+/* Removed custom scrollbar style rules */
 
 /* ===== Utility Classes ===== */
 .font-heading {

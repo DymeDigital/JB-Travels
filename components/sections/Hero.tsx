@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { ChevronDown, Plane, MapPin } from "lucide-react";
 import PlanningModal from "@/components/PlanningModal";
+import { isHeroAnimated, setHeroAnimated } from "@/lib/introState";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -27,7 +28,7 @@ export default function Hero() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-   
+    
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
@@ -94,11 +95,11 @@ export default function Hero() {
             y: 0,
             opacity: 1,
             rotateX: 0,
-            stagger: 0.12,
-            duration: 0.9,
+            stagger: 0.1,
+            duration: 0.7,
             ease: "power3.out",
           },
-          1.5
+          1.1
         );
       }
 
@@ -106,20 +107,17 @@ export default function Hero() {
       tl.fromTo(
         ".hero-para",
         { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8 },
-        2.1
+        { y: 0, opacity: 1, duration: 0.6 },
+        1.5
       );
 
-      // Buttons
+      // Buttons (Smoother transition, less stutter)
       tl.fromTo(
         ".hero-btn",
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.02, duration: 0.2 },
-        2.4
+        { y: 25, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.01, duration: 0.09, ease: "power2.out" },
+        1.8
       );
-
-
-
       // Respect prefers-reduced-motion
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (!prefersReducedMotion) {
@@ -169,7 +167,6 @@ export default function Hero() {
             y: -80,
             scale: 0.9,
             opacity: 0,
-            // letterSpacing: "0.06em",
             filter: "blur(10px)",
             stagger: 0.05,
             ease: "power2.inOut",
@@ -189,7 +186,7 @@ export default function Hero() {
           opacity: 0,
           stagger: 0.03,
           ease: "power2.inOut",
-        }, 0.06);
+        }, 0.1);
 
         scrollTl.to(".hero-scroll-indicator", {
           opacity: 0,
@@ -202,18 +199,6 @@ export default function Hero() {
           y: 30,
           ease: "power2.inOut",
         }, 0);
-
-        // 3. Navbar Animations
-        // const header = document.querySelector("header");
-        // if (header) {
-        //   scrollTl.to(header, {
-        //     backgroundColor: "rgba(8, 15, 26, 0.4)",
-        //     // backdropFilter: "blur(16px)",
-        //     borderColor: "rgba(255, 255, 255, 0.12)",
-        //     boxShadow: "0 10px 30px -10px rgba(0,0,0,0.3)",
-        //     ease: "none",
-        //   }, 0);
-        // }
 
         // 4. Next Section Reveal (Destinations header, cards, view-all)
         const destHeader = document.querySelector("#destinations-header");
@@ -399,7 +384,7 @@ export default function Hero() {
             <button
               type="button"
               onClick={() => setIsModalOpen(true)}
-              className="hero-btn group relative inline-flex items-center gap-3 px-10 py-4 rounded-full overflow-hidden font-bold text-[#0B3D5B] shadow-2xl hover:-translate-y-1 transition-all duration-300"
+              className="hero-btn opacity-0 group relative inline-flex items-center gap-3 px-10 py-4 rounded-full overflow-hidden font-bold text-[#0B3D5B] shadow-2xl hover:-translate-y-1 transition-all duration-300"
               style={{ fontFamily: "Inter, sans-serif" }}
             >
               <span className="absolute inset-0 bg-[#D8B15A] group-hover:bg-[#c9a33f] transition-colors duration-300" />

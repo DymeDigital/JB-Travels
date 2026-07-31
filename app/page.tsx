@@ -1,50 +1,42 @@
-"use client";
+import type { Metadata } from "next";
+import HomeClient from "@/components/HomeClient";
 
-import { useState, useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
-import LoadingScreen from "@/components/LoadingScreen";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import Hero from "@/components/sections/Hero";
-import Destinations from "@/components/sections/Destinations";
-import WhyUs from "@/components/sections/WhyUs";
-import Packages from "@/components/sections/Packages";
-import WorldMap from "@/components/sections/WorldMap";
-import Testimonials from "@/components/sections/Testimonials";
-import Gallery from "@/components/sections/Gallery";
-import BookingCTA from "@/components/sections/BookingCTA";
-import ScrollProgress from "@/components/ScrollProgress";
-import CustomCursor from "@/components/CustomCursor";
-import LenisProvider from "@/components/LenisProvider";
+export const metadata: Metadata = {
+  title: "JB Travels — Luxury Journeys, Extraordinary Destinations",
+  description:
+    "JB Travels crafts bespoke luxury travel experiences to the world's most extraordinary destinations. Overwater villas, private safaris, and curated escapes — all personally designed for you.",
+  keywords: [
+    "luxury travel",
+    "luxury holidays",
+    "bespoke travel",
+    "Maldives",
+    "Santorini",
+    "Bali",
+    "Swiss Alps",
+    "travel agency",
+    "premium vacation",
+    "JB Travels",
+  ],
+  openGraph: {
+    title: "JB Travels — Luxury Journeys, Extraordinary Destinations",
+    description:
+      "Bespoke luxury travel experiences crafted by passionate travel experts.",
+    type: "website",
+    locale: "en_US",
+    siteName: "JB Travels",
+    url: "https://jbtravel.co.za",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "JB Travels — Luxury Journeys",
+    description:
+      "Bespoke luxury travel experiences curated for unforgettable moments.",
+  },
+  alternates: {
+    canonical: "https://jbtravel.co.za",
+  },
+};
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
-
-
-  return (
-    <>
-      <AnimatePresence mode="wait">
-        {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
-      </AnimatePresence>
-
-      {!loading && (
-        <LenisProvider>
-          {/* <CustomCursor /> */}
-          {/* <ScrollProgress /> */}
-          <Navbar />
-          <main id="main-content" tabIndex={-1}>
-            <Hero />
-            <Destinations />
-            <WhyUs />
-            {/* <Packages /> */}
-            <WorldMap />
-            <Testimonials />
-            <Gallery />
-            <BookingCTA />
-          </main>
-          <Footer />
-        </LenisProvider>
-      )}
-    </>
-  );
+  return <HomeClient />;
 }
