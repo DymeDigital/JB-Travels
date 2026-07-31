@@ -73,7 +73,15 @@ export const metadata: Metadata = {
       { url: "/images/favicon_io/favicon-16x16.png", sizes: "16x16", type: "image/png" }
     ],
     shortcut: "/favicon.ico",
-    apple: "/images/favicon_io/favicon-32x32.png",
+    apple: [
+      { url: "/images/favicon_io/apple-touch-icon.png", sizes: "180x180", type: "image/png" }
+    ],
+    other: [
+      {
+        rel: "manifest",
+        url: "/images/favicon_io/site.webmanifest",
+      }
+    ],
   },
 };
 
