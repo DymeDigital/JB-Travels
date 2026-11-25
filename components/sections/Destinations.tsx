@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 import PackageEnquiryForm from "@/components/PackageEnquiryForm";
 import { ArrowRight, MapPin, ChevronLeft, ChevronRight, X, Mail, CheckCircle2, Sparkles, Clock } from "lucide-react";
 
@@ -573,112 +574,135 @@ style = {{ fontFamily: "Inter, sans-serif" }}
 
 {/* Enlarged Destination Package Detail & Enquiry Modal */ }
 {
-  selectedDestination && (
+  // Portal to <body>: the section sits inside transformed/animated wrappers, which
+  // would otherwise trap the modal's z-index beneath the fixed navbar.
+  selectedDestination && createPortal(
     <div
-          className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto animate-fadeIn"
-  onClick = { closeModal }
+      className="fixed inset-0 z-[1000] bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
+      onClick={closeModal}
     >
-    <div
-            className="relative w-full max-w-3xl bg-white rounded-3xl overflow-hidden shadow-2xl my-auto flex flex-col md:flex-row border border-white/20 text-[#111827] max-h-[90vh] md:max-h-none overflow-y-auto"
-  onClick = {(e) => e.stopPropagation()
-}
+      <div
+        className="relative w-full max-w-3xl max-h-[92vh] bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col text-[#111827]"
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label={selectedDestination.name}
+      >
+        {/* Close Button */}
+        <button
+          onClick={closeModal}
+          aria-label="Close details"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-md flex items-center justify-center transition-all cursor-pointer"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Scrollable body */}
+        <div className="flex-1 overflow-y-auto overscroll-contain [scrollbar-width:thin]" data-lenis-prevent>
+          {/* Banner image: wide crop suits landscape photos */}
+          <div
+            className={`relative w-full shrink-0 overflow-hidden ${isEnquiring ? "h-32 sm:h-40" : "aspect-[16/10] sm:aspect-[2/1]"}`}
           >
-  {/* Close Button */ }
-  < button
-onClick = { closeModal }
-aria-label="Close details"
-className = "absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white backdrop-blur-md flex items-center justify-center transition-all cursor-pointer"
-  >
-  <X className="w-5 h-5" />
-    </button>
-
-{/* Left Image Section */ }
-<div className="relative h-56 md:h-auto md:w-5/12 overflow-hidden shrink-0" >
-  <Image
-                src={ selectedDestination.image }
-alt = { selectedDestination.name }
-fill
-className = "object-cover"
-sizes = "(max-width: 768px) 100vw, 40vw"
-  />
-  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:hidden" />
-
-    <div className="absolute bottom-4 left-4 right-4 text-white md:hidden" >
-      <div className="flex items-center gap-1 mb-1" >
-        <MapPin className="w-3.5 h-3.5 text-[#D8B15A]" />
-          <span className="text-xs text-gray-200" style = {{ fontFamily: "Inter, sans-serif" }}>
-            { selectedDestination.country }
-            </span>
-            </div>
-            < h3 className = "text-2xl font-bold" style = {{ fontFamily: "Poppins, sans-serif" }}>
-              { selectedDestination.name }
-              </h3>
-              </div>
-              </div>
-
-{/* Right Side Content (Package Details or Enquiry Form) */ }
-<div className="p-6 sm:p-8 md:w-7/12 flex flex-col justify-between" >
-  {!isEnquiring ? (
-    /* Package Overview State */
-    <>
-    <div>
-    <div className= "hidden md:block mb-4" >
-    <div className="flex items-center gap-1.5 mb-1 text-[#D8B15A]" >
-      <MapPin className="w-4 h-4" />
-        <span className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]" style = {{ fontFamily: "Inter, sans-serif" }}>
-          { selectedDestination.country }
-          </span>
+            <Image
+              src={selectedDestination.image}
+              alt={selectedDestination.name}
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 800px) 100vw, 768px"
+            />
+            {/* Soft top shade so the close button stays visible on light photos */}
+            <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/30 to-transparent" />
           </div>
-          < h3 className = "text-2xl sm:text-3xl font-bold text-[#0B3D5B]" style = {{ fontFamily: "Poppins, sans-serif" }}>
-            { selectedDestination.name } Package
-              </h3>
+
+          <div className="p-5 sm:p-8">
+            {/* Title (the enquiry form has its own heading) */}
+            <div className={isEnquiring ? "hidden" : "mb-4"}>
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <MapPin className="w-4 h-4 text-[#D8B15A]" />
+                <span
+                  className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#6B7280]"
+                  style={{ fontFamily: "Inter, sans-serif" }}
+                >
+                  {selectedDestination.country}
+                </span>
               </div>
+              <h3
+                className={`font-bold leading-tight text-[#0B3D5B] ${isEnquiring ? "text-xl sm:text-2xl" : "text-2xl sm:text-4xl"}`}
+                style={{ fontFamily: "Poppins, sans-serif" }}
+              >
+                {selectedDestination.name}
+              </h3>
+            </div>
 
-              < div className = "flex items-center gap-2 mb-4 text-[#D8B15A] bg-[#D8B15A]/10 w-fit px-3 py-1 rounded-full text-xs font-medium" >
-                <Sparkles className="w-3.5 h-3.5" />
-                  <span>Curated Luxury Experience </span>
-                    </div>
+            {!isEnquiring ? (
+              /* Package Overview State */
+              <>
+                {/* Quick facts */}
+                <div className="flex flex-wrap items-center gap-2 mb-6" style={{ fontFamily: "Inter, sans-serif" }}>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#D8B15A]/15 text-[#8a6d24] text-xs font-semibold">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    {selectedDestination.badge || "Curated Luxury Experience"}
+                  </span>
+                  {selectedDestination.duration && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0B3D5B]/[0.06] text-[#0B3D5B] text-xs font-semibold">
+                      <Clock className="w-3.5 h-3.5" />
+                      {selectedDestination.duration}
+                    </span>
+                  )}
+                  {selectedDestination.packageId && (
+                    <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-[#0B3D5B]/[0.06] text-[#0B3D5B] text-xs font-semibold">
+                      {selectedDestination.pricePerPerson
+                        ? `From ${formatZar(selectedDestination.pricePerPerson)} pp`
+                        : "Price on request"}
+                    </span>
+                  )}
+                </div>
 
-                    < p className = "text-xs sm:text-sm text-[#4B5563] leading-relaxed mb-5 whitespace-pre-line" style = {{ fontFamily: "Inter, sans-serif" }}>
-                      { selectedDestination.longDescription }
+                {/* Description: first paragraph as a lead-in */}
+                <div className="space-y-4 max-w-prose" style={{ fontFamily: "Inter, sans-serif" }}>
+                  {selectedDestination.longDescription
+                    .split(/\n\s*\n/)
+                    .map((p) => p.trim())
+                    .filter(Boolean)
+                    .map((p, i) => (
+                      <p
+                        key={i}
+                        className={
+                          i === 0
+                            ? "text-[15px] sm:text-base leading-7 text-[#1F2937]"
+                            : "text-sm sm:text-[15px] leading-7 text-[#4B5563]"
+                        }
+                      >
+                        {p}
                       </p>
+                    ))}
+                </div>
 
-                      {selectedDestination.packageId && selectedDestination.highlights.length > 0 && (
-                        <ul className="mb-5 space-y-1.5">
-                          {selectedDestination.highlights.slice(0, 6).map((item) => (
-                            <li key={item} className="flex items-start gap-2 text-xs sm:text-sm text-[#4B5563]" style={{ fontFamily: "Inter, sans-serif" }}>
-                              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#D8B15A] shrink-0" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-
-                      <PriceTag dest={selectedDestination} />
-
-
-                      </div>
-
-{/* CTA Buttons */ }
-<div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center gap-3" >
-  <button
-                      onClick={ () => setIsEnquiring(true) }
-className = "w-full sm:flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#0B3D5B] hover:bg-[#D8B15A] text-white hover:text-[#0B3D5B] font-semibold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 cursor-pointer"
-style = {{ fontFamily: "Inter, sans-serif" }}
+                {selectedDestination.packageId && selectedDestination.highlights.length > 0 && (
+                  <div className="mt-7 rounded-2xl bg-[#F8F6F1] border border-[#D8B15A]/20 p-5 sm:p-6">
+                    <h4
+                      className="text-xs font-bold uppercase tracking-[0.14em] text-[#0B3D5B] mb-4"
+                      style={{ fontFamily: "Inter, sans-serif" }}
                     >
-  <Mail className="w-4 h-4" />
-    { selectedDestination.buttonText || "Enquire Now" }
-      </button>
-      < button
-onClick = { closeModal }
-className = "w-full sm:w-auto px-6 py-3.5 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold text-sm transition-all cursor-pointer"
-style = {{ fontFamily: "Inter, sans-serif" }}
-                    >
-  Close
-  </button>
-  </div>
-  </>
-              ) : formSubmitted ? (
+                      Highlights
+                    </h4>
+                    <ul className="space-y-3">
+                      {selectedDestination.highlights.slice(0, 6).map((item) => (
+                        <li
+                          key={item}
+                          className="flex items-start gap-3 text-sm leading-6 text-[#374151]"
+                          style={{ fontFamily: "Inter, sans-serif" }}
+                        >
+                          <CheckCircle2 className="w-[18px] h-[18px] mt-[3px] text-[#D8B15A] shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </>
+            ) : formSubmitted ? (
   /* Success Confirmation State */
   <div className= "flex flex-col justify-center items-center text-center py-8" >
   <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4" >
@@ -707,10 +731,33 @@ style = {{ fontFamily: "Inter, sans-serif" }}
     onSubmitted={() => setFormSubmitted(true)}
   />
               )}
-</div>
-  </div>
-  </div>
-      )}
+          </div>
+        </div>
+
+        {/* Sticky actions (overview only) */}
+        {!isEnquiring && (
+          <div className="shrink-0 px-5 py-4 sm:px-8 border-t border-gray-100 bg-white flex flex-col-reverse sm:flex-row items-center gap-3">
+            <button
+              onClick={closeModal}
+              className="w-full sm:w-auto px-6 py-3.5 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold text-sm transition-all cursor-pointer"
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
+              Close
+            </button>
+            <button
+              onClick={() => setIsEnquiring(true)}
+              className="w-full sm:flex-1 flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#0B3D5B] hover:bg-[#D8B15A] text-white hover:text-[#0B3D5B] font-semibold text-sm transition-all duration-300 shadow-md hover:shadow-lg active:scale-95 cursor-pointer"
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
+              <Mail className="w-4 h-4" />
+              {selectedDestination.buttonText || "Enquire Now"}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>,
+    document.body
+  )}
 </section>
   );
 }

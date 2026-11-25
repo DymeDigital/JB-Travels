@@ -47,7 +47,7 @@ export async function getPackages(): Promise<Destination[]> {
         longDescription: pkg.overview || pkg.shortDescription || "",
         highlights: pkg.includes ?? [],
         image: pkg.featuredImage?.asset?._ref
-          ? urlFor(pkg.featuredImage).width(1200).auto("format").url()
+          ? urlFor(pkg.featuredImage).width(1600).auto("format").url()
           : FALLBACK_IMAGE,
         duration: pkg.duration,
         badge: pkg.badge,
