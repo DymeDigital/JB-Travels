@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import PageShell from "@/components/layout/PageShell";
 import Destinations from "@/components/sections/Destinations";
 import BookingCTA from "@/components/sections/BookingCTA";
+import { getPackages } from "@/lib/server/packages";
 
 export const metadata: Metadata = {
   title: "Luxury Travel Packages — JB Travels",
@@ -38,10 +39,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PackagesPage() {
+// Re-fetch packages from Sanity at most once a minute.
+export const revalidate = 60;
+
+export default async function PackagesPage() {
+  const packages = await getPackages();
   return (
     <PageShell>
-      <Destinations />
+      <Destinations packages={packages} />
       <BookingCTA />
     </PageShell>
   );

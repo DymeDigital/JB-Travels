@@ -50,9 +50,9 @@ const galleryImages = [
   {
     id: 7,
     src: "/images/Bali2.png",
-    alt: "Swiss Alps snow-capped peaks with alpine village",
+    alt: "Bali",
     span: "",
-    label: "Swiss Alps",
+    label: "Bali",
   },
 ];
 

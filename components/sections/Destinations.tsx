@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { ArrowRight, MapPin, ChevronLeft, ChevronRight, X, Mail, CheckCircle2, Sparkles, Send, User, Phone, MessageSquare } from "lucide-react";
+import PackageEnquiryForm from "@/components/PackageEnquiryForm";
+import { ArrowRight, MapPin, ChevronLeft, ChevronRight, X, Mail, CheckCircle2, Sparkles, Clock } from "lucide-react";
 
-type Destination = {
+export type Destination = {
   id: string;
   name: string;
   country: string;
@@ -12,9 +13,20 @@ type Destination = {
   longDescription: string;
   highlights: string[];
   image: string;
+  /** Sanity _id — set only for packages managed in Studio. */
+  packageId?: string;
+  duration?: string;
+  badge?: string;
+  /** Fixed price per person in ZAR. Undefined means "price on request". */
+  pricePerPerson?: number;
+  buttonText?: string;
 };
 
-const destinations: Destination[] = [
+const formatZar = (n: number) =>
+  new Intl.NumberFormat("en-ZA", { style: "currency", currency: "ZAR", maximumFractionDigits: 0 }).format(n);
+
+// Shown only until at least one package is published (and visible) in Studio.
+const FALLBACK_DESTINATIONS: Destination[] = [
   {
     id: "europe",
     name: "Europe",
@@ -97,7 +109,34 @@ const destinations: Destination[] = [
   },
 ];
 
-export default function Destinations() {
+/** Price line for Studio-managed packages; nothing for the built-in fallback list. */
+function PriceTag({ dest }: { dest: Destination }) {
+  if (!dest.packageId) return null;
+  return (
+    <div className="mt-3 pt-3 border-t border-gray-100 flex items-baseline justify-between gap-2" style={{ fontFamily: "Inter, sans-serif" }}>
+      {dest.pricePerPerson ? (
+        <span className="text-sm text-[#6B7280]">
+          From{" "}
+          <span className="text-lg font-bold text-[#0B3D5B]" style={{ fontFamily: "Poppins, sans-serif" }}>
+            {formatZar(dest.pricePerPerson)}
+          </span>{" "}
+          pp
+        </span>
+      ) : (
+        <span className="text-sm font-semibold text-[#0B3D5B]">Price on request</span>
+      )}
+      {dest.duration && (
+        <span className="flex items-center gap-1 text-xs text-[#6B7280]">
+          <Clock className="w-3 h-3" />
+          {dest.duration}
+        </span>
+      )}
+    </div>
+  );
+}
+
+export default function Destinations({ packages }: { packages?: Destination[] }) {
+  const destinations = packages && packages.length > 0 ? packages : FALLBACK_DESTINATIONS;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showAll, setShowAll] = useState(false);
   const [visibleCount, setVisibleCount] = useState(3);
@@ -110,13 +149,7 @@ export default function Destinations() {
 
   // Enquiry Form State inside modal
   const [isEnquiring, setIsEnquiring] = useState(false);
-  const [formName, setFormName] = useState("");
-  const [formEmail, setFormEmail] = useState("");
-  const [formPhone, setFormPhone] = useState("");
-  const [formMessage, setFormMessage] = useState("");
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
 
 
   // Touch gesture support for mobile swiping
@@ -191,12 +224,6 @@ export default function Destinations() {
     setSelectedDestination(dest);
     setIsEnquiring(false);
     setFormSubmitted(false);
-    setFormName("");
-    setFormEmail("");
-    setFormPhone("");
-    setFormMessage(
-      `Hi Brandon,\n\nI am interested in learning more about the ${dest.name} (${dest.country}) package.\n\nPlease send me additional details, availability, and pricing.`
-    );
   };
 
   const closeModal = () => {
@@ -231,44 +258,6 @@ export default function Destinations() {
       nextSlide();
     } else if (distance < -minSwipeDistance) {
       prevSlide();
-    }
-  };
-
-  const handleSubmitEnquiry = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedDestination) return;
-
-    setIsSubmitting(true);
-    setSubmitError(null);
-
-    try {
-      const res = await fetch("/api/enquire", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formName,
-          email: formEmail,
-          phone: formPhone,
-          packageName: selectedDestination.name,
-          country: selectedDestination.country,
-          message: formMessage,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        setSubmitError(data.error || "Failed to send email. Please try again.");
-        setIsSubmitting(false);
-        return;
-      }
-
-      setIsSubmitting(false);
-      setFormSubmitted(true);
-    } catch (err: any) {
-      console.error("Submission error:", err);
-      setSubmitError("Failed to reach email service. Please check your connection.");
-      setIsSubmitting(false);
     }
   };
 
@@ -460,6 +449,7 @@ style = {{ fontFamily: "Inter, sans-serif" }}
                         >
   { dest.description }
   </p>
+  <PriceTag dest={dest} />
   </div>
   </div>
   </article>
@@ -556,6 +546,7 @@ style = {{ fontFamily: "Inter, sans-serif" }}
                   >
   { dest.description }
   </p>
+  <PriceTag dest={dest} />
   </div>
   </article>
             ))}
@@ -652,6 +643,19 @@ sizes = "(max-width: 768px) 100vw, 40vw"
                       { selectedDestination.longDescription }
                       </p>
 
+                      {selectedDestination.packageId && selectedDestination.highlights.length > 0 && (
+                        <ul className="mb-5 space-y-1.5">
+                          {selectedDestination.highlights.slice(0, 6).map((item) => (
+                            <li key={item} className="flex items-start gap-2 text-xs sm:text-sm text-[#4B5563]" style={{ fontFamily: "Inter, sans-serif" }}>
+                              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#D8B15A] shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+
+                      <PriceTag dest={selectedDestination} />
+
 
                       </div>
 
@@ -663,7 +667,7 @@ className = "w-full sm:flex-1 flex items-center justify-center gap-2 px-6 py-3.5
 style = {{ fontFamily: "Inter, sans-serif" }}
                     >
   <Mail className="w-4 h-4" />
-    Enquire Now
+    { selectedDestination.buttonText || "Enquire Now" }
       </button>
       < button
 onClick = { closeModal }
@@ -685,7 +689,7 @@ style = {{ fontFamily: "Inter, sans-serif" }}
           </h4>
           < p className = "text-xs sm:text-sm text-[#4B5563] max-w-sm mb-6 leading-relaxed" style = {{ fontFamily: "Inter, sans-serif" }}>
             Thank you for your enquiry regarding the < strong className = "text-[#0B3D5B]" > { selectedDestination.name } Package </strong>.
-                    Our team will be in touch with you shortly.
+                    Our team will confirm your package, price and any extras, then email you a quote with a secure payment link.
                   </p>
   < button
 onClick = { closeModal }
@@ -697,123 +701,11 @@ style = {{ fontFamily: "Inter, sans-serif" }}
   </div>
               ) : (
   /* Interactive Form State */
-  <form onSubmit= { handleSubmitEnquiry } className = "flex flex-col justify-between h-full" >
-    <div>
-    <div className="flex items-center justify-between mb-4 pb-2 border-b border-gray-100" >
-      <div>
-      <h4 className="text-lg font-bold text-[#0B3D5B]" style = {{ fontFamily: "Poppins, sans-serif" }}>
-        Enquire: { selectedDestination.name } Package
-          </h4>
-          < p className = "text-xs text-[#6B7280]" >
-            Send your travel enquiry to brandon @jbtravel.co.za
-</p>
-  </div>
-  < button
-type = "button"
-onClick = {() => setIsEnquiring(false)}
-className = "text-xs text-[#0B3D5B] underline hover:text-[#D8B15A] cursor-pointer"
-  >
-  Back
-  </button>
-  </div>
-
-  < div className = "space-y-3 mb-4" >
-    {/* Name Input */ }
-    < div >
-    <label className="block text-xs font-semibold text-gray-700 mb-1" style = {{ fontFamily: "Inter, sans-serif" }}>
-      Your Name
-        </label>
-        < div className = "relative" >
-          <User className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-                            type="text"
-required
-placeholder = "e.g. Sarah Jenkins"
-value = { formName }
-onChange = {(e) => setFormName(e.target.value)}
-className = "w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0B3D5B]/30 focus:border-[#0B3D5B]"
+  <PackageEnquiryForm
+    destination={selectedDestination}
+    onBack={() => setIsEnquiring(false)}
+    onSubmitted={() => setFormSubmitted(true)}
   />
-  </div>
-  </div>
-
-{/* Email Input */ }
-<div>
-  <label className="block text-xs font-semibold text-gray-700 mb-1" style = {{ fontFamily: "Inter, sans-serif" }}>
-    Your Email Address < span className = "text-red-500" >* </span>
-      </label>
-      < div className = "relative" >
-        <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-                            type="email"
-required
-placeholder = "e.g. sarah@example.com"
-value = { formEmail }
-onChange = {(e) => setFormEmail(e.target.value)}
-className = "w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0B3D5B]/30 focus:border-[#0B3D5B]"
-  />
-  </div>
-  </div>
-
-{/* Phone Input */ }
-<div>
-  <label className="block text-xs font-semibold text-gray-700 mb-1" style = {{ fontFamily: "Inter, sans-serif" }}>
-    Phone Number(Optional)
-      </label>
-      < div className = "relative" >
-        <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-                            type="tel"
-placeholder = "e.g. +27 82 123 4567"
-value = { formPhone }
-onChange = {(e) => setFormPhone(e.target.value)}
-className = "w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0B3D5B]/30 focus:border-[#0B3D5B]"
-  />
-  </div>
-  </div>
-
-{/* Message Input */ }
-<div>
-  <label className="block text-xs font-semibold text-gray-700 mb-1" style = {{ fontFamily: "Inter, sans-serif" }}>
-    Message / Travel Preferences
-      </label>
-      < div className = "relative" >
-        <MessageSquare className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
-          <textarea
-                            rows={ 3 }
-value = { formMessage }
-onChange = {(e) => setFormMessage(e.target.value)}
-className = "w-full pl-9 pr-3 py-2 text-xs sm:text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0B3D5B]/30 focus:border-[#0B3D5B] resize-none"
-  />
-  </div>
-  </div>
-  </div>
-  </div>
-
-{/* Submit Button */ }
-<div className="pt-3 border-t border-gray-100 flex flex-col gap-2" >
-  { submitError && (
-    <p className="text-xs text-red-500 text-center" > { submitError } </p>
-                    )}
-<div className="flex gap-2" >
-  <button
-                        type="submit"
-disabled = { isSubmitting }
-className = "flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#0B3D5B] hover:bg-[#D8B15A] text-white hover:text-[#0B3D5B] font-semibold text-xs sm:text-sm transition-all duration-300 shadow-md cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-style = {{ fontFamily: "Inter, sans-serif" }}
-                      >
-  <Send className="w-4 h-4" />
-    { isSubmitting? "Sending...": "Send Enquiry" }
-    </button>
-    < button
-type = "button"
-onClick = {() => setIsEnquiring(false)}
-className = "px-4 py-3 rounded-full border border-gray-300 text-gray-700 text-xs sm:text-sm cursor-pointer hover:bg-gray-100"
-  >
-  Back
-  </button>
-  </div>
-  </div>
-  </form>
               )}
 </div>
   </div>

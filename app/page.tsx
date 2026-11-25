@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import HomeClient from "@/components/HomeClient";
+import { getPackages } from "@/lib/server/packages";
 
 export const metadata: Metadata = {
   title: "JB Travels — Luxury Journeys, Extraordinary Destinations",
@@ -37,6 +38,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
-  return <HomeClient />;
+// Re-fetch packages from Sanity at most once a minute.
+export const revalidate = 60;
+
+export default async function Home() {
+  const packages = await getPackages();
+  return <HomeClient packages={packages} />;
 }

@@ -12,6 +12,7 @@ import { structureTool } from 'sanity/structure'
 import { apiVersion, dataset, projectId } from './sanity/env'
 import { schema } from './sanity/schemaTypes'
 import { structure } from './sanity/structure'
+import { SendPaymentLinkAction } from './sanity/actions/sendPaymentLink'
 
 export default defineConfig({
   basePath: '/studio',
@@ -25,4 +26,8 @@ export default defineConfig({
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
   ],
+  document: {
+    actions: (prev, context) =>
+      context.schemaType === 'booking' ? [...prev, SendPaymentLinkAction] : prev,
+  },
 })

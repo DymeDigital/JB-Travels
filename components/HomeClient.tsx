@@ -7,7 +7,7 @@ import { isIntroComplete, setIntroComplete } from "@/lib/introState";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
-import Destinations from "@/components/sections/Destinations";
+import Destinations, { type Destination } from "@/components/sections/Destinations";
 import WhyUs from "@/components/sections/WhyUs";
 import WorldMap from "@/components/sections/WorldMap";
 import Testimonials from "@/components/sections/Testimonials";
@@ -15,7 +15,7 @@ import Gallery from "@/components/sections/Gallery";
 import BookingCTA from "@/components/sections/BookingCTA";
 import LenisProvider from "@/components/LenisProvider";
 
-export default function HomeClient() {
+export default function HomeClient({ packages }: { packages: Destination[] }) {
   // Always start true so server and client initial renders match (no hydration mismatch).
   // After hydration, immediately skip the loader if the user already saw it this session.
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ export default function HomeClient() {
           <Navbar />
           <main id="main-content" tabIndex={-1}>
             <Hero />
-            <Destinations />
+            <Destinations packages={packages} />
             <WhyUs />
             <WorldMap />
             <Testimonials />

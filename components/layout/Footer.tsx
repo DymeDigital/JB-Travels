@@ -37,12 +37,34 @@ const socials = [
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email || submitting) return;
+
+    setSubmitting(true);
+    setError("");
+
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Something went wrong. Please try again.");
+      }
+
       setSubscribed(true);
       setEmail("");
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -89,25 +111,37 @@ export default function Footer() {
                 ✓ You&apos;re on the list. Adventures await.
               </motion.p>
             ) : (
-              <form onSubmit={handleSubmit} className="flex gap-2">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email address"
-                  required
-                  aria-label="Email for newsletter"
-                  className="flex-1 px-4 py-2.5 rounded-full bg-white/8 border border-white/15 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-[#D8B15A]/60 transition-colors"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                />
-                <button
-                  type="submit"
-                  aria-label="Subscribe to newsletter"
-                  className="w-10 h-10 rounded-full bg-[#D8B15A] hover:bg-[#c9a24f] flex items-center justify-center transition-colors shrink-0"
-                >
-                  <ArrowRight className="w-4 h-4 text-[#0B3D5B]" />
-                </button>
-              </form>
+              <>
+                <form onSubmit={handleSubmit} className="flex gap-2">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Your email address"
+                    required
+                    disabled={submitting}
+                    aria-label="Email for newsletter"
+                    className="flex-1 px-4 py-2.5 rounded-full bg-white/8 border border-white/15 text-sm text-white placeholder:text-white/35 focus:outline-none focus:border-[#D8B15A]/60 transition-colors disabled:opacity-60"
+                    style={{ fontFamily: "Inter, sans-serif" }}
+                  />
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    aria-label="Subscribe to newsletter"
+                    className="w-10 h-10 rounded-full bg-[#D8B15A] hover:bg-[#c9a24f] flex items-center justify-center transition-colors shrink-0 disabled:opacity-60"
+                  >
+                    <ArrowRight className="w-4 h-4 text-[#0B3D5B]" />
+                  </button>
+                </form>
+                {error && (
+                  <p
+                    className="text-xs text-red-400 mt-2"
+                    style={{ fontFamily: "Inter, sans-serif" }}
+                  >
+                    {error}
+                  </p>
+                )}
+              </>
             )}
           </div>
 

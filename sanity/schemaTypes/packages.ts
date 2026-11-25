@@ -124,25 +124,27 @@ export default defineType({
 
         defineField({
             name: "price",
-            title: "Package Price",
+            title: "Price per Person (ZAR)",
             type: "number",
+            description: "Starting price per person, in Rand. Enquiries are pre-quoted at this price × travellers; staff confirm the final price and add-ons on the booking before the payment link is sent.",
             hidden: ({ document }) => document?.packageType !== "fixed",
-            group: "pricing"
+            group: "pricing",
+            validation: Rule => Rule.min(1).precision(2).custom((value, context) =>
+                context.document?.packageType === "fixed" && !value
+                    ? "Fixed-price packages need a price."
+                    : true
+            )
         }),
 
+        // Stitch only charges in Rand, so all prices are ZAR.
         defineField({
             name: "currency",
             title: "Currency",
             type: "string",
             initialValue: "ZAR",
-            group: "pricing",
-            options: {
-                list: [
-                    "ZAR",
-                    "USD",
-                    "EUR"
-                ]
-            }
+            readOnly: true,
+            hidden: true,
+            group: "pricing"
         }),
 
         defineField({
@@ -150,6 +152,7 @@ export default defineType({
             title: "Deposit Available",
             type: "boolean",
             initialValue: false,
+            hidden: true, // not used by the site yet; staff send deposits as a line item
             group: "pricing"
         }),
 
@@ -157,7 +160,7 @@ export default defineType({
             name: "depositAmount",
             title: "Deposit Amount",
             type: "number",
-            hidden: ({ document }) => !document?.depositAvailable,
+            hidden: true, // not used by the site yet; staff send deposits as a line item
             group: "pricing"
         }),
 
@@ -166,6 +169,7 @@ export default defineType({
             title: "Allow Installments",
             type: "boolean",
             initialValue: false,
+            hidden: true, // not used by the site yet; staff send deposits as a line item
             group: "pricing"
         }),
 
@@ -287,6 +291,7 @@ export default defineType({
             name: "availableFrom",
             title: "Available From",
             type: "date",
+            hidden: true, // not used by the site yet
             group: "booking"
         }),
 
@@ -294,6 +299,7 @@ export default defineType({
             name: "availableTo",
             title: "Available To",
             type: "date",
+            hidden: true, // not used by the site yet
             group: "booking"
         }),
 
