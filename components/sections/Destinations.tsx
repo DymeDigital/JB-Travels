@@ -639,7 +639,7 @@ sizes = "(max-width: 768px) 100vw, 40vw"
                   <span>Curated Luxury Experience </span>
                     </div>
 
-                    < p className = "text-xs sm:text-sm text-[#4B5563] leading-relaxed mb-5" style = {{ fontFamily: "Inter, sans-serif" }}>
+                    < p className = "text-xs sm:text-sm text-[#4B5563] leading-relaxed mb-5 whitespace-pre-line" style = {{ fontFamily: "Inter, sans-serif" }}>
                       { selectedDestination.longDescription }
                       </p>
 
