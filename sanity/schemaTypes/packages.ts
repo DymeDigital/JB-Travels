@@ -47,19 +47,7 @@ export default defineType({
             title: "Destination",
             type: "string",
             group: "basic",
-            options: {
-                list: [
-                    { title: "Turkey", value: "Turkey" },
-                    { title: "India", value: "India" },
-                    { title: "Mauritius", value: "Mauritius" },
-                    { title: "Thailand", value: "Thailand" },
-                    { title: "UAE", value: "UAE" },
-                    { title: "Europe", value: "Europe" },
-                    { title: "Maldives", value: "Maldives" },
-                    { title: "Bali", value: "Bali" },
-                    { title: "South Africa", value: "South Africa" }
-                ]
-            }
+            description: "Shown under the package name on the website, e.g. \"France, Italy, Greece\" or \"Istanbul & Cappadocia\"."
         }),
 
         defineField({
