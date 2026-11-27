@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 
 type FloatingWhatsAppProps = {
@@ -11,6 +12,10 @@ export default function FloatingWhatsApp({
     phoneNumber,
     message = "Hi JB Travel, I'd like to find out more about planning a trip.",
 }: FloatingWhatsAppProps) {
+    const pathname = usePathname();
+    // Not for staff using the embedded Sanity Studio.
+    if (pathname?.startsWith("/studio")) return null;
+
     const href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
     return (
